@@ -21,27 +21,47 @@ module.exports = async (req, res) => {
 
     if (pathname.startsWith('/content') && req.method === 'GET') {
 
-        await fs.readFile(`./${pathname}`, 'utf-8', (err, data) => {
-            if (err) {
-                console.log(err);
+        if (pathname.endsWith('png') || pathname.endsWith('jpg') || pathname.endsWith('jpeg') || pathname.endsWith('ico') && req.method === 'GET') {
+            await fs.readFile(path.join(`./${pathname}`), (err, data) => {
+                if (err) {
+                    console.error(err);
+                    res.writeHead(404, {
+                        'Content-Type': 'text/plain'
+                    });
 
-                res.writeHead(404, {
-                    'Content-Type': 'text/plain'
+                    res.write('File not found!');
+                    res.end();
+
+                    return;
+                }
+                
+                res.write(data);
+                res.end();
+            });
+        } else {
+            await fs.readFile(`./${pathname}`, 'utf-8', (err, data) => {
+                if (err) {
+                    console.error(err);
+                    res.writeHead(404, {
+                        'Content-Type': 'text/plain'
+                    });
+
+                    res.write('File not found!');
+                    res.end();
+
+                    return;
+                }
+
+                let contentType = getContentType(pathname);
+
+                res.writeHead(200, {
+                    'Content-Type': contentType
                 });
 
-                res.write('Not found');
+                res.write(data);
                 res.end();
-
-                return;
-            }
-
-            res.writeHead(200,{
-                'Content-Type': getContentType(pathname)
             });
-
-            res.write(data);
-            res.end();
-        })
+        }
     } else {
         return true;
     }
