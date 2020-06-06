@@ -4,7 +4,7 @@ const path = require('path');
 const cats = require('../data/cats');
 
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
     const pathname = url.parse(req.url).pathname;
 
     if (pathname === '/' && req.method === 'GET') {
@@ -12,7 +12,7 @@ module.exports = (req, res) => {
             path.join(__dirname, '../views/home/index.html')
         );
 
-        fs.readFile(filePath, (err, data) => {
+        await fs.readFile(filePath, (err, data) => {
             if(err){
                 console.log(err);
                 res.writeHead(404, {

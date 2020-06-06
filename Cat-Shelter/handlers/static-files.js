@@ -16,12 +16,12 @@ function getContentType(url) {
     }
 }
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
     const pathname = url.parse(req.url).pathname;
 
     if (pathname.startsWith('/content') && req.method === 'GET') {
 
-        fs.readFile(`./${pathname}`, 'utf-8', (err, data) => {
+        await fs.readFile(`./${pathname}`, 'utf-8', (err, data) => {
             if (err) {
                 console.log(err);
 
@@ -35,7 +35,6 @@ module.exports = (req, res) => {
                 return;
             }
 
-            console.log(pathname);
             res.writeHead(200,{
                 'Content-Type': getContentType(pathname)
             });

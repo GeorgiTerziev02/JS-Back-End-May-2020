@@ -14,5 +14,8 @@
     "NodeJs"
   ],
   "author": "Georgi Terziev",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "formidable": "^1.2.2"
+  }
 }
