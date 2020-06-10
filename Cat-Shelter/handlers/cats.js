@@ -167,7 +167,13 @@ module.exports = async (req, res) => {
                     {{catBreeds}}
                 </select>`
 
-                let catBreedPlaceholder = breeds.map((breed) => `<option value="${breed}">${breed}</option>`);
+                let catBreedPlaceholder = breeds.map((breed) => {
+                    let selected = '';
+                    if (breed === currentCat.breed) {
+                        selected = 'selected';
+                    }
+                    return `<option value="${breed}" ${selected}>${breed}</option>`
+                });
                 let modifiedHTML = html.toString().replace('{{catBreeds}}', catBreedPlaceholder);
 
                 let modifiedData = data.toString().replace('{{catInfo}}', modifiedHTML);
@@ -242,9 +248,7 @@ module.exports = async (req, res) => {
                 })[0];
 
                 let html = `
-                            <img src="${path.normalize(
-                                path.join(__dirname, '../content/images/', currentCat.image)
-                            )}" alt="${currentCat.name}">
+                            <img src="${path.join('../content/images/', currentCat.image)}" alt="${currentCat.name}">
                                 <label for="name">Name</label>
                                     <input type="text" id="name" value="${currentCat.name}" disabled>
                                     <label for="description">Description</label>
@@ -267,8 +271,8 @@ module.exports = async (req, res) => {
 
             const index = cats.indexOf(currentCat);
             cats.splice(index, 1);
-            
-            await fs.writeFile(path.normalize(path.join(__dirname, '../data/cats.json')), JSON.stringify(cats), 'utf8', function (err) { console.log(err)});
+
+            await fs.writeFile(path.normalize(path.join(__dirname, '../data/cats.json')), JSON.stringify(cats), 'utf8', function (err) { console.log(err) });
 
             res.writeHead(301, {
                 'Location': '/'
@@ -280,7 +284,7 @@ module.exports = async (req, res) => {
     }
 }
 
-function getCatId(pathname){
+function getCatId(pathname) {
     const arr = pathname.split('/');
     return arr[arr.length - 1];
 }
