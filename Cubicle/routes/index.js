@@ -12,8 +12,8 @@ router.get('/create', (req, res) => {
 
 router.post('/create', (req, res) => {
     const { name, description, imageUrl, difficultyLevel } = req.body;
-    const cube = new Cube(name,description,imageUrl, difficultyLevel);
-    cube.save(()=>{
+    const cube = new Cube(name, description, imageUrl, difficultyLevel);
+    cube.save(() => {
         res.redirect(301, '/');
     })
 });
@@ -34,7 +34,8 @@ router.get('/details/:id', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    getAllCubes((cubes) => {
+    const { search, from, to } = req.query;
+    getAllCubes(search, from, to, (cubes) => {
         res.render('index', {
             title: 'Cube Workshop',
             cubes: cubes
