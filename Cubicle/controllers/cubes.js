@@ -1,15 +1,18 @@
-const fs = require('fs');
-const path = require('path');
-const { json } = require('express');
+const { getCubes, getCube } = require('./database')
 
-const dbPath = path.join(__dirname, '../config/database.json');
-
-const getCubes = () => {
-    const cubes = fs.readFileSync(dbPath);
-
-    return JSON.parse(cubes);
+const getAllCubes = (callback) => {
+    getCubes((cubes) => {
+        callback(cubes);
+    })
 }
 
+const getCubeById = (id, callback) => {
+    getCube(id, (cube) => {
+        callback(cube)
+    });
+};
+
 module.exports = {
-    getCubes
+    getAllCubes,
+    getCubeById
 };
