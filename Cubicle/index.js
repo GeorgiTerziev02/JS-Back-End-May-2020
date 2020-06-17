@@ -8,7 +8,8 @@ const app = require('express')();
 mongoose.connect(config.databaseUrl,
     {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify: true
     }, (err) => {
         if (err) {
             console.error(err);
