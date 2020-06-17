@@ -10,7 +10,7 @@ const CubeSchema = new mongoose.Schema({
         required: true,
         maxlength: 2000
     },
-    imageUrl:{
+    imageUrl: {
         type: String,
         required: true,
     },
@@ -20,10 +20,14 @@ const CubeSchema = new mongoose.Schema({
         min: 1,
         max: 6
     },
-    accessories:[{
+    accessories: [{
         type: 'ObjectId',
         ref: 'Accessory'
     }]
 });
+
+CubeSchema.path('imageUrl').validate(function (value) {
+    return value.startsWith('http://') || value.startsWith('https://');
+}, 'Image url is not valid');
 
 module.exports = mongoose.model('Cube', CubeSchema);
