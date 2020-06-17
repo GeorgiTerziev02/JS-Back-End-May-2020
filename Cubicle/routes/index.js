@@ -29,13 +29,12 @@ router.get('/about', (req, res) => {
     });
 });
 
-router.get('/details/:id', (req, res) => {
-    getCubeById(req.params.id, (cube) => {
+router.get('/details/:id', async (req, res) => {
+    const cube = await getCubeById(req.params.id);
         res.render('details', {
             title: 'Details | Cube Workshop',
             ...cube
         });
-    })
 });
 
 router.get('/', async (req, res) => {

@@ -29,10 +29,9 @@ const getAllCubes = async (search, from, to) => {
     return cubes;
 }
 
-const getCubeById = (id, callback) => {
-    getCube(id, (cube) => {
-        callback(cube)
-    });
+const getCubeById = async (id) => {
+    const cube = await Cube.findById(id).lean();
+    return cube;
 };
 
 module.exports = {
