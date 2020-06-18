@@ -42,9 +42,14 @@ router.get('/details/:id', async (req, res) => {
 
 router.get('/', async (req, res) => {
     const { search, from, to } = req.query;
+    const returnedCubes = await getAllCubes(search, from, to);
+    if(returnedCubes.length === 0){
+        res.redirect('/');
+        return;
+    }
     res.render('index', {
         title: 'Cube Workshop',
-        cubes: await getAllCubes(search, from, to)
+        cubes: returnedCubes
     });
 });
 

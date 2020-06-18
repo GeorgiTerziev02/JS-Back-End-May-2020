@@ -1,32 +1,20 @@
 const Cube = require('../models/cube');
-const cube = require('../models/cube');
-const accessory = require('../models/accessory');
 
 const getAllCubes = async (search, from, to) => {
-    // getCubes((cubes) => {
-    //     // TODO: do not use let
-    //     let filteredCubes = cubes;
-    //     if (search) {
-    //         filteredCubes = cubes.filter(x => x.name.includes(search));
-    //     }
+    const searchValue = search || '';
+    const fromValue = from || 0;
+    const toValue = to || 6;
 
-    //     if (from) {
-    //         filteredCubes = filteredCubes.filter(x => x.difficulty >= from);
-    //     }
+    const cubes = await Cube.find({ name: { $regex: searchValue, $options: "i" } }, function(err, data) {
+                                if(err){
+                                    console.error(err);
+                                }
+                            })
+                          .where('difficulty')
+                          .gte(fromValue)
+                          .lte(toValue)
+                          .lean();
 
-    //     if (to) {
-    //         filteredCubes = filteredCubes.filter(x => x.difficulty <= to);
-    //     }
-
-    //     if (filteredCubes.length !== 0) {
-    //         callback(filteredCubes);
-    //     } else {
-    //         callback(cubes);
-    //     }
-    // })
-
-    // TODO: Implement search
-    const cubes = await Cube.find().lean();
     return cubes;
 }
 
@@ -43,7 +31,7 @@ const getCubeByIdWithAccessories = async (id) => {
 const attachAccessoryById = async (cubeId, accessoryId) => {
     const cube = await Cube.findByIdAndUpdate(cubeId, {
         $addToSet: {
-        accessories: [accessoryId]
+            accessories: [accessoryId]
         }
     });
 };
