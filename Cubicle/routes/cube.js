@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const Cube = require('../models/cube');
 const { getCubeById, getCubeByIdWithAccessories } = require('../controllers/cubes');
-const router = new Router();
+const router = Router();
 
 router.get('/create', (req, res) => {
     res.render('create', {
