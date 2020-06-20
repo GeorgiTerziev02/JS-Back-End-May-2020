@@ -3,7 +3,7 @@ const config = require('../config/config')[env];
 
 const { Router } = require('express');
 const Cube = require('../models/cube');
-const { getCubeById, getCubeByIdWithAccessories } = require('../controllers/cubes');
+const { getCubeById, getCubeByIdWithAccessories, deleteCubeById } = require('../controllers/cubes');
 const jwt = require('jsonwebtoken');
 const { authAccess, getUserStatus } = require('../controllers/user');
 
@@ -17,11 +17,11 @@ router.get('/create', authAccess, getUserStatus, (req, res) => {
 });
 
 router.post('/create', authAccess, (req, res) => {
-    const { 
+    const {
         name,
         description,
         imageUrl,
-        difficultyLevel 
+        difficultyLevel
     } = req.body;
 
     const token = req.cookies['aid'];
@@ -68,6 +68,12 @@ router.get('/delete/:id', authAccess, getUserStatus, async (req, res) => {
         ...cube,
         isLoggedIn: req.isLoggedIn
     });
+})
+
+router.post('/delete/:id', authAccess, async (req, res) => {
+    await deleteCubeById(req.params.id);
+    
+    res.redirect(301, '/');
 })
 
 module.exports = router;

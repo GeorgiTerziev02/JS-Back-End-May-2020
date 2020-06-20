@@ -36,9 +36,18 @@ const attachAccessoryById = async (cubeId, accessoryId) => {
     });
 };
 
+const deleteCubeById = async (cubeId) =>{
+    try {
+        await Cube.findByIdAndDelete(cubeId);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 module.exports = {
     getAllCubes,
     getCubeById,
     getCubeByIdWithAccessories,
-    attachAccessoryById
+    attachAccessoryById,
+    deleteCubeById
 };
