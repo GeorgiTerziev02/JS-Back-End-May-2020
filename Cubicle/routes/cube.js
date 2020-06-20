@@ -3,7 +3,7 @@ const config = require('../config/config')[env];
 
 const { Router } = require('express');
 const Cube = require('../models/cube');
-const { getCubeById, getCubeByIdWithAccessories, deleteCubeById } = require('../controllers/cubes');
+const { getCubeById, getCubeByIdWithAccessories, editCubeById, deleteCubeById } = require('../controllers/cubes');
 const jwt = require('jsonwebtoken');
 const { authAccess, getUserStatus } = require('../controllers/user');
 
@@ -59,6 +59,25 @@ router.get('/edit/:id', authAccess, getUserStatus, async (req, res) => {
     });
 })
 
+router.post('/edit/:id', authAccess, async (req, res) => {
+    const cubeId = req.params.id;
+
+    const {
+        name,
+        description,
+        imageUrl,
+        difficultyLevel
+    } = req.body;
+
+    const status = await editCubeById(cubeId, name, description, imageUrl, difficultyLevel);
+    console.log(status);
+    if(status){
+        res.redirect(301, `/details/${cubeId}`);
+    } else {
+        res.redirect(301, `/edit/${cubeId}`);
+    }
+});
+
 router.get('/delete/:id', authAccess, getUserStatus, async (req, res) => {
     const cubeId = req.params.id;
     const cube = await getCubeById(cubeId);
@@ -72,7 +91,7 @@ router.get('/delete/:id', authAccess, getUserStatus, async (req, res) => {
 
 router.post('/delete/:id', authAccess, async (req, res) => {
     await deleteCubeById(req.params.id);
-    
+
     res.redirect(301, '/');
 })
 

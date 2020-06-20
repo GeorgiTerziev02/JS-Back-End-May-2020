@@ -36,6 +36,16 @@ const attachAccessoryById = async (cubeId, accessoryId) => {
     });
 };
 
+const editCubeById = async(cubeId, name, description, imageUrl, difficultyLevel) =>{
+    try {
+        await Cube.findByIdAndUpdate(cubeId, {name, description,imageUrl, difficulty: difficultyLevel});
+        return true;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+};
+
 const deleteCubeById = async (cubeId) =>{
     try {
         await Cube.findByIdAndDelete(cubeId);
@@ -49,5 +59,6 @@ module.exports = {
     getCubeById,
     getCubeByIdWithAccessories,
     attachAccessoryById,
+    editCubeById,
     deleteCubeById
 };
