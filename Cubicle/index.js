@@ -6,6 +6,7 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const cubeRouter = require('./routes/cube');
 const accessoryRouter = require('./routes/accessory');
+const { getUserStatus } = require('./controllers/user');
 
 const app = require('express')();
 
@@ -30,9 +31,10 @@ app.use('/', cubeRouter);
 app.use('/', accessoryRouter);
 app.use('/', indexRouter);
 
-app.get('*', (req, res) => {
+app.get('*', getUserStatus, (req, res) => {
     res.render('404', {
-        title: 'Error | Cube Workshop'
+        title: 'Error | Cube Workshop',
+        isLoggedIn: req.isLoggedIn
     });
 });
 

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { saveUser, verifyUser, guestAccess, getUserStatus } = require('../controllers/user');
+const { saveUser, verifyUser, guestAccess, getUserStatus, authAccess } = require('../controllers/user');
 const router = Router();
 
 router.get('/login', guestAccess, getUserStatus, (req, res) => {
@@ -12,7 +12,7 @@ router.get('/login', guestAccess, getUserStatus, (req, res) => {
 router.post('/login', guestAccess, async (req, res) => {
     const status = await verifyUser(req, res);
 
-    if(!status){
+    if (!status) {
         return res.redirect(301, '/login');
     }
 
@@ -29,11 +29,17 @@ router.get('/register', guestAccess, getUserStatus, (req, res) => {
 router.post('/register', guestAccess, async (req, res) => {
     const status = await saveUser(req, res);
 
-    if(!status){
+    if (!status) {
         return res.redirect(301, '/register');
     }
 
     res.redirect('/');
+});
+
+router.get('/logout', authAccess, (req, res) => {
+    res.clearCookie('aid');
+
+    res.redirect(301, '/');
 });
 
 
