@@ -10,6 +10,7 @@ const { authAccess, getUserStatus } = require('../controllers/user');
 const router = Router();
 
 router.get('/create', authAccess, getUserStatus, (req, res) => {
+    const error = req.query.error ? 'Invalid cube data' : null;
     res.render('create', {
         title: 'Create  | Cube Workshop',
         isLoggedIn: req.isLoggedIn
@@ -27,12 +28,18 @@ router.post('/create', authAccess, (req, res) => {
     const token = req.cookies['aid'];
     const decodedObject = jwt.verify(token, config.privateKey);
 
-    const cube = new Cube({ name, description, imageUrl, difficulty: difficultyLevel, creatorId: decodedObject.userId });
+    const cube = new Cube({
+        name: name.trim(),
+        description: description.trim(),
+        imageUrl,
+        difficulty: difficultyLevel,
+        creatorId: decodedObject.userId
+    });
 
     cube.save((err) => {
         if (err) {
             console.error(err);
-            res.redirect(301, '/create');
+            res.redirect(301, '/create?error=true');
         } else {
             res.redirect(301, '/');
         }
@@ -70,8 +77,8 @@ router.post('/edit/:id', authAccess, async (req, res) => {
     } = req.body;
 
     const status = await editCubeById(cubeId, name, description, imageUrl, difficultyLevel);
-    
-    if(status){
+
+    if (status) {
         res.redirect(301, `/details/${cubeId}`);
     } else {
         res.redirect(301, `/edit/${cubeId}`);

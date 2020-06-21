@@ -7,28 +7,29 @@ const router = new Router();
 
 
 router.get('/create/accessory', authAccess, getUserStatus, (req, res) => {
+    const error = req.query.error ? 'Invalid accessory data' : null;
     res.render('createAccessory', {
         title: 'Create accessory',
-        isLoggedIn: req.isLoggedIn
+        isLoggedIn: req.isLoggedIn,
+        error
     });
 });
 
 router.post('/create/accessory', authAccess, async (req, res) => {
     const { name, description, imageUrl } = req.body;
     const accessory = new Accessory({
-        name,
-        description,
+        name: name.trim(),
+        description: description.trim(),
         imageUrl
     });
 
     try {
         await accessory.save();
+        res.redirect(301, '/');
     } catch (err) {
-        console.error(err);
-        res.redirect('/create');
+        console.error(err.message);
+        res.redirect('/create/accessory?error=true');
     }
-
-    res.redirect(301, '/');
 });
 
 router.get('/attach/accessory/:id', authAccess, getUserStatus, async (req, res) => {

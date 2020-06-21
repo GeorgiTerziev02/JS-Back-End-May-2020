@@ -18,6 +18,10 @@ const saveUser = async (req, res) => {
         repeatPassword
     } = req.body;
 
+    if (!password || password.length < 8 || !password.match(/^[A-Za-z0-9]+$/)) {
+        return false;
+    }
+
     if (password !== repeatPassword) {
         return false;
     }
@@ -25,9 +29,8 @@ const saveUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = new User({ username, password: hashedPassword });
-
     try {
+        const user = new User({ username, password: hashedPassword });
         const userObject = await user.save();
 
         const token = generateToken({
