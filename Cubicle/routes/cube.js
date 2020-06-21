@@ -70,7 +70,7 @@ router.post('/edit/:id', authAccess, async (req, res) => {
     } = req.body;
 
     const status = await editCubeById(cubeId, name, description, imageUrl, difficultyLevel);
-    console.log(status);
+    
     if(status){
         res.redirect(301, `/details/${cubeId}`);
     } else {
