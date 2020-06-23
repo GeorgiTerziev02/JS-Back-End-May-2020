@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const Cube = require('../models/cube');
-const cube = require('../models/cube');
+const { authenticate } = require('../utils/auth');
 
 const router = Router();
 
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
         });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
     const {
         name,
         description,
