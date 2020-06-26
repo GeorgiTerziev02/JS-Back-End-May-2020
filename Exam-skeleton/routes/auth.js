@@ -1,13 +1,14 @@
 const { Router } = require('express');
 const { registerUser } = require('../controllers/users');
+const { guestAccess, authAccess } = require('../utils/auth');
 
 const router = Router();
 
-router.get('/register', (req, res) => {
-
+router.get('/register', guestAccess, (req, res) => {
+    res.json('register page');
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', guestAccess, async (req, res) => {
     const status = await registerUser(req, res);
 
     if (!status) {
@@ -17,11 +18,11 @@ router.post('/register', async (req, res) => {
     res.redirect(301, '/');
 });
 
-router.get('/login', (req, res) => {
-
+router.get('/login', guestAccess, (req, res) => {
+    res.json('login page');
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', guestAccess, async (req, res) => {
     const status = await verifyLogin(req, res);
 
     if (!status) {
