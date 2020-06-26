@@ -7,6 +7,7 @@ const config = require('./config/config')[env];
 const { connectToDB } = require('./config/database');
 
 const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
 
 const app = express();
 //connectToDB();
@@ -14,6 +15,7 @@ const app = express();
 require('./config/express')(app);
 
 app.use('/', indexRouter);
+app.use('/', authRouter);
 
 app.get('*', (req, res) => {
     res
