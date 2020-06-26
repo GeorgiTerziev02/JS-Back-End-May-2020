@@ -8,7 +8,7 @@ router.get('/login', (req, res) => {
     });
 });
 
-router.post('/login', async (req, res)=>{
+router.post('/login', async (req, res) => {
     res.redirect(301, '/');
 })
 
@@ -18,7 +18,8 @@ router.get('/register', (req, res) => {
     });
 });
 
-router.post('/register', async (req,res) => {
+router.post('/register', async (req, res) => {
+    console.log(req.body);
     res.redirect(301, '/');
 })
 
