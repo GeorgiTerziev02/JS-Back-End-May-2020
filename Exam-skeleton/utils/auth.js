@@ -1,5 +1,6 @@
+const env = process.env.NODE_ENV;
 const jwt = require('jsonwebtoken');
-const config = require('../config/config');
+const config = require('../config/config')[env];
 
 const authAccess = async (req, res, next) => {
     const token = req.cookies['aid'];

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { registerUser } = require('../controllers/users');
+const { registerUser, verifyLogin } = require('../controllers/users');
 const { guestAccess, authAccess } = require('../utils/auth');
 
 const router = Router();
@@ -28,7 +28,6 @@ router.post('/login', guestAccess, async (req, res) => {
     if (!status) {
         res.redirect(301, '/login')
     }
-
     res.redirect(301, '/');
 });
 

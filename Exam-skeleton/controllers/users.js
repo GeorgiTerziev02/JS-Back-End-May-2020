@@ -39,7 +39,7 @@ const verifyLogin = async (req, res) => {
         username,
         password
     } = req.body;
-
+    
     try {
         const user = await User.findOne({ username });
 
@@ -66,5 +66,6 @@ const verifyLogin = async (req, res) => {
 };
 
 module.exports = {
-    registerUser
+    registerUser,
+    verifyLogin
 }
