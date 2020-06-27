@@ -3,3 +3,5 @@ node_modules
 /Cubicle-rest-api/.env
 /Exam preparation/SharedTripp/.env
 /Exam preparation/SharedTripp - Resources/.env
+/Exam preparation/Tutorials/*.env
+.env
