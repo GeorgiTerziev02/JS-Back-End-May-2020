@@ -22,9 +22,14 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    creator: {
+        type: 'ObjectId',
+        required: true,
+        ref: 'User'
+    },
     usersEnrolled: [{
         type: 'ObjectId',
-        ref: User 
+        ref: 'User' 
     }]
     // •	Is Public - boolean, default - false,
     // •	Created at – Date or String, required
